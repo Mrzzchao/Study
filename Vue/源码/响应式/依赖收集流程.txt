@@ -1,0 +1,10 @@
+observe
+walk
+defineReactive
+get
+dep.depend()
+watcher.addDep(new Dep())
+watcher.newDepIds.add(id)
+watcher.newDeps.push(dep)
+dep.addSub(new Watcher())
+dep.subs.push(watcher)
