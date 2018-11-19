@@ -1,0 +1,27 @@
+var vm = new Vue({
+  data: {
+    firstName: 'Foo',
+    lastName: 'Bar'
+  },
+  computed: {
+    fullName: function () {
+      return this.firstName + ' ' + this.lastName
+    }
+  }
+})
+
+watcher.depend -> dep.depend -> watcher.addDep -> dep.addSub -> dep.subs.push(watcher)
+
+this.fullName -> watcher.depend   // 渲染watcher 订阅计算属性fullName的变化
+watcher.evaluate -> watcher.get   // 执行fullName求值
+watcher.getter.call(vm, vm) -> return this.firstName + ' ' + this.lastName // 执行开发定义的代码
+this.firstName -> watcher.depend  // compute watcher 订阅响应式数据firstName的变化
+
+
+this.fullName = xxx -> dep.notify       // 通知this.fullName的订阅者
+dep.subs[all].update -> watcher.update  // 执行订阅者更新操作
+watcher.getAndInvoke -> this.dep.notify // 通知订阅computer watcher的订阅者
+
+
+
+
