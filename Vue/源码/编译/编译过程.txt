@@ -1,0 +1,17 @@
+Vue 编译过程
+一.解析模版字符串成AST
+const ast = parse(template.trim(), options)
+1.从 options 中获取方法和配置
+2.解析 HTML 模板
+3.处理开始标签
+4.处理闭合标签
+5.处理文本内容
+
+二.优化语法树
+optimize(ast, options)
+1.标记静态节点
+2.标记静态根
+
+三.生成代码
+const code = generate(ast, options)
+
