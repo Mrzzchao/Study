@@ -30,3 +30,24 @@
 
 ```
 
+
+
+## 滑动窗口
+
+- 两个指针
+- 滑动窗口
+
+```
+int left = 0, right = 0;
+while (right < s.size()) {
+    window.add(s[right]);
+    right++;
+    
+    while (valid) {
+        window.remove(s[left]);
+        left++;
+    }
+}
+```
+
+[https://github.com/Alex660/Algorithms-and-data-structures/blob/master/demos/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A311%E9%81%93.md](https://github.com/Alex660/Algorithms-and-data-structures/blob/master/demos/滑动窗口11道.md)
