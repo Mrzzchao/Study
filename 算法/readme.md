@@ -51,3 +51,15 @@ while (right < s.size()) {
 ```
 
 [https://github.com/Alex660/Algorithms-and-data-structures/blob/master/demos/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A311%E9%81%93.md](https://github.com/Alex660/Algorithms-and-data-structures/blob/master/demos/滑动窗口11道.md)
+
+
+
+
+
+## 题目
+
+### 43 Multiply Strings 解法
+
+1. 字符串拆分成数字
+2. 
+
