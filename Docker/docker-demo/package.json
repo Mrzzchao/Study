@@ -1,0 +1,43 @@
+{
+  "name": "docker-demo",
+  "version": "1.0.0",
+  "description": "cm server app example",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "docker:build": "docker build --network=host -t csighub.tencentyun.com/cmweb/docker-demo ."
+  },
+  "keywords": [],
+  "author": "zhichazhang",
+  "license": "ISC",
+  "dependencies": {
+    "@tencent/cm-server-framework": "~1.6.16",
+    "axios": "^0.19.2",
+    "graphql": "^14.5.8",
+    "graphql-tools": "^4.0.6",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.8",
+    "mysql2": "^2.0.1",
+    "node-input-validator": "^4.1.0",
+    "sequelize": "^5.21.2"
+  },
+  "devDependencies": {
+    "@tencent/cm-bin": "~0.4.5",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
+    "prettier": "^1.16.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "prettier --write src/**/*.ts",
+      "git add"
+    ]
+  }
+}
