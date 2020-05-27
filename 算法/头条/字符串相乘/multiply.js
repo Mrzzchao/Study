@@ -1,13 +1,15 @@
 /**
- * @param {string} num1
- * @param {string} num2
- * @return {string}
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
  */
-var multiply = function(num1, num2) {
-    
+var findKthLargest = function(nums, k) {
+    nums = nums.sort((a, b) => b - a);
+
+    return nums[k - 1]
 };
 
-const s1 = "prosperity"
-const s2 = "properties"
-const result = multiply(s1, s2)
+const s1 = [3,2,1,5,6,4]
+const s2 = 2
+const result = findKthLargest(s1, s2)
 console.log(result)
