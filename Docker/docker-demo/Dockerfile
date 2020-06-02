@@ -10,11 +10,8 @@ mkdir -p /data/sites/$PROJECT_NAME/log/
 # 从系统复制到容器里面，如果是压缩文件，会解压
 ADD ./src /usr/local/services/$PROJECT_NAME/src/
 
-
 # 定义工作目录（run cmd基于指定目录运行）
 WORKDIR /usr/local/services/$PROJECT_NAME/
 
 # 指定docker转发端口
 EXPOSE 8000
-
-CMD ["bash", "/usr/local/services/TSW-1.0/bin/proxy/startup.sh"]
