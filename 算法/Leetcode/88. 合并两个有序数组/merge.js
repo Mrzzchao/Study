@@ -5,6 +5,11 @@
  * @param {number[]} nums2
  * @param {number} n
  * @return {void} Do not return anything, modify nums1 in-place instead.
+ * 
+ * 1. 遍历num1 终止条件是num1结尾和num2不为空
+ * 2. 判断num2如果小于等于num1的项 则插入num1前
+ * 3. 去掉num2插入的那个数
+ * 4. 剩余的num2全部放入num1
  */
 var merge = function(nums1, m, nums2, n) {
     var dealNum2 = nums2.slice(0, n);
