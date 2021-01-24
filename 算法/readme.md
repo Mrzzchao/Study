@@ -77,6 +77,25 @@ while (right < s.size()) {
 
 ## 树
 
+### 前、中、后序遍历
+
+- 通过递归遍历整棵树
+- 前就是根->左->右
+- 中就是左->根->右
+- 后就是左->右->根
+- 所以其实他们的遍历代码就是一行的区别。对当前的节点的操作顺序区别。
+
+
+
+###  层序遍历
+
+ - 先把根结点放入队列
+ - 取出队列第一节点，判断左右树根是否为空，如果不为空，则放入队列
+ - 取出的节点可以做任何操作
+ - 继续循环1-3，直至队列为空
+
+
+
 ### Leetcode题目
 
 #### 144. 二叉树的前序遍历
@@ -101,7 +120,7 @@ const preorderTraversal = function (root) {
 
   function search(node) {
     if (node) {
-      // 边界情况就是节点为空
+      // 边界情况就是节点为空，中序就是把推入数组放在遍历左和右中间，后序同理。
       result.push(node.val);
 
       // 遍历左子树
@@ -120,6 +139,178 @@ const preorderTraversal = function (root) {
 
 
 
+#### 102. 二叉树的层序遍历
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * 1. 先把根结点放入队列
+ * 2. 取出根节点，判断左右树根是否为空，如果不为空，则放入队列
+ * 3. 继续循环1-2，直至队列为空
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+const levelOrder = function (root) {
+  if (!root) return [];
+  // 存取遍历的节点
+  const queue = [root];
+
+  // 结果
+  const result = [];
+
+  while (queue.length) {
+    // 当前层的临时数组，为了把当层的所有节点全部清空
+    const tmp = [];
+    const size = queue.length;
+
+    // 遍历当前层
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift();
+      tmp.push(node.val);
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
+    }
+    result.push(tmp);
+  }
+  return result;
+};
+
+```
+
+
+
+#### 104. 二叉树的最大深度
+
+```js
+/**
+ * 1. 根节点的最大深度是max(l, r) + 1 左子树和右子树最大深度的最大值+1
+ * 2. 所以递归解决子问题即可
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+const maxDepth = function (root) {
+  let maxDepth = 0;
+
+  function dfs(node) {
+    if (!node) return 0;
+
+    const leftDepth = dfs(node.left);
+    const rightDepth = dfs(node.right);
+
+    const currentNodeMaxDepth = Math.max(leftDepth, rightDepth) + 1;
+
+    maxDepth = Math.max(maxDepth, currentNodeMaxDepth);
+
+    return currentNodeMaxDepth;
+  }
+
+  dfs(root);
+
+  return maxDepth;
+};
+```
+
+
+
+#### 101. 对称二叉树
+
+```js
+/**
+ * 1. 利用层序遍历
+ * 2. 前后双子针，一个从前扫，一个从后扫
+ * 3. 对比两个子针对应的值是否相等
+ * 4. 如果整颗树遍历完了都相等，则就是对称二叉树
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+const isSymmetric = function (root) {
+  if (!root) return true;
+  return check(root.left, root.right);
+};
+
+function check(left, right) {
+  // 辅助队列，做层序遍历
+  const queue = [left, right];
+
+  while (queue.length) {
+    const size = queue.length;
+    for (let i = 0; i < size; i += 2) {
+      // 双子针，一个指向从左边扫，一个从右边扫
+      const left = queue.shift();
+      const right = queue.shift();
+
+      if ((!left && right) || (left && !right)) return false;
+
+      if (left && right) {
+        if (left.val !== right.val) {
+          return false;
+        }
+
+        // 插入的时候按最左边、最右边向中间逼近的原则插入
+        queue.push(left.left, right.right); // 推入下一层的一对节点
+        queue.push(left.right, right.left); // 推入下一层的一对节点
+      }
+    }
+  }
+
+  return true;
+}
+
+/**
+ * 递归的方式去做
+ * 1. 满足对称代表，他的左子树和右子树都满足对称
+ * @param {*} root 根结点
+ */
+const isSymmetric2 = function (root) {
+  function check(left, right) {
+    if (!left && !right) {
+      return true;
+    }
+
+    if (left && right) {
+      return (
+        left.val === right.val && check(left.left, right.right) && check(left.right, right.left)
+      );
+    }
+
+    return false;
+  }
+
+  if (!root) {
+    return true;
+  }
+
+  return check(root.left, root.right);
+};
+
+```
 
 
 
