@@ -1,6 +1,6 @@
 #!/bin/sh
 
-git filter-branch --env-filter -f '
+git filter-branch --env-filter'
 
 OLD_EMAIL="zhichazhang@tencent.com"
 CORRECT_NAME="Mrzzchao"
