@@ -27,7 +27,7 @@ const buildTree = function (preorder, inorder) {
   if (inorder.length === 0) return null;
 
   // 根结点就是前序数组第一个节点
-  const rootVal = preorder[0];
+  const [rootVal] = preorder;
 
   const root = new TreeNode(rootVal);
 
