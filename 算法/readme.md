@@ -4,6 +4,8 @@
 
 [我的幕布](https://share.mubu.com/doc/1rY45-19b8_)
 
+[二叉树题目](https://leetcode-cn.com/leetbook/read/data-structure-binary-tree/x63shc/)
+
 
 
 ## 递归
@@ -108,10 +110,14 @@ while (right < s.size()) {
 
 ### Leetcode题目
 
-#### 144. 二叉树的前序遍历
+#### 101. 对称二叉树
 
 ```js
 /**
+ * 1. 利用层序遍历
+ * 2. 前后双子针，一个从前扫，一个从后扫
+ * 3. 对比两个子针对应的值是否相等
+ * 4. 如果整颗树遍历完了都相等，则就是对称二叉树
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
  *     this.val = (val===undefined ? 0 : val)
@@ -119,33 +125,74 @@ while (right < s.size()) {
  *     this.right = (right===undefined ? null : right)
  * }
  */
+
 /**
- * 前序遍历就是遍历根->左子树->右子树
  * @param {TreeNode} root
- * @return {number[]}
+ * @return {boolean}
  */
-const preorderTraversal = function (root) {
-  // 遍历结果
-  const result = [];
+const isSymmetric = function (root) {
+  if (!root) return true;
+  return check(root.left, root.right);
+};
 
-  function search(node) {
-    if (node) {
-      // 边界情况就是节点为空，中序就是把推入数组放在遍历左和右中间，后序同理。
-      result.push(node.val);
+function check(left, right) {
+  // 辅助队列，做层序遍历
+  const queue = [left, right];
 
-      // 遍历左子树
-      search(node.left);
+  while (queue.length) {
+    const size = queue.length;
+    for (let i = 0; i < size; i += 2) {
+      // 双子针，一个指向从左边扫，一个从右边扫
+      const left = queue.shift();
+      const right = queue.shift();
 
-      // 遍历右子树
-      search(node.right);
+      if ((!left && right) || (left && !right)) return false;
+
+      if (left && right) {
+        if (left.val !== right.val) {
+          return false;
+        }
+
+        // 插入的时候按最左边、最右边向中间逼近的原则插入
+        queue.push(left.left, right.right); // 推入下一层的一对节点
+        queue.push(left.right, right.left); // 推入下一层的一对节点
+      }
     }
   }
 
-  search(root);
+  return true;
+}
 
-  return result;
+/**
+ * 递归的方式去做
+ * 1. 满足对称代表，他的左子树和右子树都满足对称
+ * @param {*} root 根结点
+ */
+const isSymmetric2 = function (root) {
+  function check(left, right) {
+    if (!left && !right) {
+      return true;
+    }
+
+    if (left && right) {
+      return (
+        left.val === right.val && check(left.left, right.right) && check(left.right, right.left)
+      );
+    }
+
+    return false;
+  }
+
+  if (!root) {
+    return true;
+  }
+
+  return check(root.left, root.right);
 };
+
 ```
+
+
 
 
 
@@ -240,14 +287,12 @@ const maxDepth = function (root) {
 
 
 
-#### 101. 对称二叉树
+
+
+#### 105. 从前序与中序遍历序列构造二叉树
 
 ```js
 /**
- * 1. 利用层序遍历
- * 2. 前后双子针，一个从前扫，一个从后扫
- * 3. 对比两个子针对应的值是否相等
- * 4. 如果整颗树遍历完了都相等，则就是对称二叉树
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
  *     this.val = (val===undefined ? 0 : val)
@@ -256,131 +301,54 @@ const maxDepth = function (root) {
  * }
  */
 
-/**
- * @param {TreeNode} root
- * @return {boolean}
- */
-const isSymmetric = function (root) {
-  if (!root) return true;
-  return check(root.left, root.right);
-};
-
-function check(left, right) {
-  // 辅助队列，做层序遍历
-  const queue = [left, right];
-
-  while (queue.length) {
-    const size = queue.length;
-    for (let i = 0; i < size; i += 2) {
-      // 双子针，一个指向从左边扫，一个从右边扫
-      const left = queue.shift();
-      const right = queue.shift();
-
-      if ((!left && right) || (left && !right)) return false;
-
-      if (left && right) {
-        if (left.val !== right.val) {
-          return false;
-        }
-
-        // 插入的时候按最左边、最右边向中间逼近的原则插入
-        queue.push(left.left, right.right); // 推入下一层的一对节点
-        queue.push(left.right, right.left); // 推入下一层的一对节点
-      }
-    }
-  }
-
-  return true;
+function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
 }
 
 /**
- * 递归的方式去做
- * 1. 满足对称代表，他的左子树和右子树都满足对称
- * @param {*} root 根结点
+ * 1. 前序遍历是中、左、右。所以第一个节点就是根节点
+ * 2. 中序遍历是左、中、右。中节点的左边是左子树，右边是右子树。
+ * 3. 通过中序数组就知道左子树的节点范围、节点个数
+ * 4. 然后通过节点个数就知道左子树和右子树在前序数组的节点范围
+ * 5. 接着就是子问题了
+ * @param {number[]} preorder
+ * @param {number[]} inorder
+ * @return {TreeNode}
  */
-const isSymmetric2 = function (root) {
-  function check(left, right) {
-    if (!left && !right) {
-      return true;
-    }
+const buildTree = function (preorder, inorder) {
+  if (inorder.length === 0) return null;
 
-    if (left && right) {
-      return (
-        left.val === right.val && check(left.left, right.right) && check(left.right, right.left)
-      );
-    }
+  // 根结点就是前序数组第一个节点
+  const rootVal = preorder[0];
 
-    return false;
-  }
+  const root = new TreeNode(rootVal);
 
-  if (!root) {
-    return true;
-  }
+  // 根结点在中序数组中的索引
+  const rootIndex = inorder.indexOf(rootVal);
 
-  return check(root.left, root.right);
+  // 左子树节点个数
+  const leftTreeLen = rootIndex + 1;
+
+  // 左子树 [1,2,3,4,5].slice(0, 3) = [1,2,3]
+  root.left = buildTree(preorder.slice(1, leftTreeLen), inorder.slice(0, rootIndex));
+
+  // 右子树
+  root.right = buildTree(preorder.slice(leftTreeLen), inorder.slice(leftTreeLen));
+
+  return root;
 };
+
+const inorder = [1, 2, 3, 4];
+const postorder = [4, 3, 2, 1];
+
+const tree = buildTree(postorder, inorder);
+console.log(tree);
 
 ```
 
 
-
-#### 112. 路径总和
-
-```js
-/**
- * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
- * }
- */
-/**
- * 1. 利用先序遍历，每一次遍历加上当前值
- * 2. 当是叶子节点时，判断和是否等于目标值
- * 3. 等于返回true 全部遍历完没有返回false
- * @param {TreeNode} root
- * @param {number} targetSum
- * @return {boolean}
- */
-const hasPathSum = function (root, targetSum) {
-  const sum = 0;
-
-  function dfs(node, preSum = 0) {
-    if (!node) return;
-    const sum = preSum + node.val;
-    console.log('sum', sum);
-    if (!node.left && !node.right && sum === targetSum) {
-      return true;
-    }
-    return dfs(node.left, sum) || dfs(node.right, sum);
-  }
-
-  return !!dfs(root, 0);
-};
-
-/**
- * 递归做法
- * 1. 当前问题等于sum - node.val的左子树问题和右子树问题
- * 2. 所以递归左子树和右子树。hasPathSum2(root.left, targetSum - root.val)
- * @param {TreeNode} root
- * @param {number} targetSum
- * @return {boolean}
- */
-const hasPathSum2 = function (root, targetSum) {
-  if (!root) return false;
-
-  // 遇到叶子节点的时候判断
-  if (!root.left && !root.right) {
-    return root.val === targetSum;
-  }
-
-  // 左子树问题和右子树问题
-  return (
-    hasPathSum2(root.left, targetSum - root.val) || hasPathSum2(root.right, targetSum - root.val)
-  );
-};
-```
 
 
 
@@ -457,6 +425,105 @@ const buildTree = function (inorder, postorder) {
 ```
 
 
+
+#### 112. 路径总和
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * 1. 利用先序遍历，每一次遍历加上当前值
+ * 2. 当是叶子节点时，判断和是否等于目标值
+ * 3. 等于返回true 全部遍历完没有返回false
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {boolean}
+ */
+const hasPathSum = function (root, targetSum) {
+  const sum = 0;
+
+  function dfs(node, preSum = 0) {
+    if (!node) return;
+    const sum = preSum + node.val;
+    console.log('sum', sum);
+    if (!node.left && !node.right && sum === targetSum) {
+      return true;
+    }
+    return dfs(node.left, sum) || dfs(node.right, sum);
+  }
+
+  return !!dfs(root, 0);
+};
+
+/**
+ * 递归做法
+ * 1. 当前问题等于sum - node.val的左子树问题和右子树问题
+ * 2. 所以递归左子树和右子树。hasPathSum2(root.left, targetSum - root.val)
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {boolean}
+ */
+const hasPathSum2 = function (root, targetSum) {
+  if (!root) return false;
+
+  // 遇到叶子节点的时候判断
+  if (!root.left && !root.right) {
+    return root.val === targetSum;
+  }
+
+  // 左子树问题和右子树问题
+  return (
+    hasPathSum2(root.left, targetSum - root.val) || hasPathSum2(root.right, targetSum - root.val)
+  );
+};
+```
+
+
+
+#### 144. 二叉树的前序遍历
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * 前序遍历就是遍历根->左子树->右子树
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+const preorderTraversal = function (root) {
+  // 遍历结果
+  const result = [];
+
+  function search(node) {
+    if (node) {
+      // 边界情况就是节点为空，中序就是把推入数组放在遍历左和右中间，后序同理。
+      result.push(node.val);
+
+      // 遍历左子树
+      search(node.left);
+
+      // 遍历右子树
+      search(node.right);
+    }
+  }
+
+  search(root);
+
+  return result;
+};
+```
 
 
 
