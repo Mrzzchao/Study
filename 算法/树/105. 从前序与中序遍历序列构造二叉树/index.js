@@ -23,7 +23,7 @@ function TreeNode(val, left, right) {
  * @param {number[]} inorder
  * @return {TreeNode}
  */
-const buildTree = function (preorder, inorder) {
+function buildTree(preorder, inorder) {
   if (inorder.length === 0) return null;
 
   // 根结点就是前序数组第一个节点
@@ -44,10 +44,14 @@ const buildTree = function (preorder, inorder) {
   root.right = buildTree(preorder.slice(leftTreeLen), inorder.slice(leftTreeLen));
 
   return root;
-};
+}
 
 const inorder = [1, 2, 3, 4];
 const postorder = [4, 3, 2, 1];
 
 const tree = buildTree(postorder, inorder);
 console.log(tree);
+
+module.exports = {
+  buildTree,
+};

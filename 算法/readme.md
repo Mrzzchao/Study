@@ -486,6 +486,57 @@ const hasPathSum2 = function (root, targetSum) {
 
 
 
+#### 116. 填充每个节点的下一个右侧节点指针
+
+```js
+/**
+ * // Definition for a Node.
+ * function Node(val, left, right, next) {
+ *    this.val = val === undefined ? null : val;
+ *    this.left = left === undefined ? null : left;
+ *    this.right = right === undefined ? null : right;
+ *    this.next = next === undefined ? null : next;
+ * };
+ */
+/**
+ * 1. 大框架使用层序遍历
+ * 2. 层序遍历时，节点N.next = N+1
+ * @param {Node} root
+ * @return {Node}
+ */
+const connect = function (root) {
+  const queue = [root];
+  const index = 0;
+  while (queue.length) {
+    const size = queue.length;
+    for (let i = 0; i < size; i++) {
+      // 取出一个节点
+      const node = queue.shift();
+
+      // 链接节点，除了最后一个。此时第一个节点就是下一个节点
+      if (i < size - 1) {
+        node.next = queue[0];
+      }
+
+      // 插入下一层节点
+      if (node && node.left) {
+        queue.push(node.left);
+      }
+      if (node && node.right) {
+        queue.push(node.right);
+      }
+    }
+  }
+  console.log('root', root);
+  return root;
+};
+
+```
+
+
+
+
+
 #### 144. 二叉树的前序遍历
 
 ```js
@@ -524,23 +575,6 @@ const preorderTraversal = function (root) {
   return result;
 };
 ```
-
-
-
-
-## 题目
-
-### 三数之和
-
-1. 排序
-
-2. 首尾两个指针 一个计数器 一个记录数组
-3. 左指针+右指针 > 0 ：右指针左移动
-4. 左指针+右指针 < 0 ：左指针右移动 arr.push(左、右)
-5. 左指针+右指针 = 0 :   arr.push(左)
-6. 右指针左移 重复3 - 5 直到 左 = 右
-
-
 
 
 
