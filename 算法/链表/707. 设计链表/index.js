@@ -99,8 +99,8 @@ MyLinkedList.prototype.addAtTail = function (val) {
  * @return {void}
  */
 MyLinkedList.prototype.addAtIndex = function (index, val) {
-  if (index > this.len - 1) return;
-  if (index < 0) {
+  if (index > this.len) return;
+  if (index <= 0) {
     return this.addAtHead(val);
   }
   if (index === this.len) {
@@ -116,10 +116,17 @@ MyLinkedList.prototype.addAtIndex = function (index, val) {
   }
 
   const newNode = new ListNode(val);
+  // 新节点右指针指向第index的节点
   newNode.next = node;
+  // 新节点左指针指向第index的左节点
+  newNode.pre = node.pre;
+
+  // 第index的节点的左节点的右指针指向新节点
   node.pre.next = newNode;
 
-  newNode.pre = node.pre;
+  // 第index的节点的左指针指向新节点
+  node.pre = newNode;
+
   this.len = this.len + 1;
 };
 
@@ -153,6 +160,8 @@ MyLinkedList.prototype.deleteAtIndex = function (index) {
       this.head = node.next;
       node.next.pre = null;
     } else if (index === this.len - 1) {
+      // 尾指针指向上一个节点
+      this.tail = node.pre;
       // 删除尾节点
       node.pre.next = null;
     } else {
@@ -184,9 +193,36 @@ MyLinkedList.prototype.deleteAtIndex = function (index) {
  */
 
 const linkedList = new MyLinkedList();
-linkedList.addAtHead(1);
-linkedList.addAtTail(3);
-linkedList.addAtIndex(1, 2); // 链表变为1-> 2-> 3
-linkedList.get(1); // 返回2
-linkedList.deleteAtIndex(1); // 现在链表是1-> 3
-linkedList.get(1); // 返回3
+const funcList = [
+  'MyLinkedList',
+  'addAtHead',
+  'addAtTail',
+  'deleteAtIndex',
+  'addAtTail',
+  'addAtIndex',
+  'addAtIndex',
+  'deleteAtIndex',
+  'deleteAtIndex',
+  'addAtTail',
+  'addAtIndex',
+  'addAtTail',
+];
+const paramsList = [[], [7], [0], [1], [5], [1, 1], [2, 6], [2], [1], [7], [1, 7], [6]];
+
+function run() {
+  funcList.forEach((item, idx) => {
+    linkedList[item] && linkedList[item].apply(linkedList, paramsList[idx]);
+  });
+}
+
+run();
+// linkedList.addAtHead(7);
+// linkedList.addAtHead(2);
+// linkedList.addAtHead(1);
+// linkedList.addAtIndex(3, 0);
+// linkedList.deleteAtIndex(2);
+// linkedList.addAtHead(6);
+// linkedList.addAtTail(4);
+// linkedList.get(4);
+// linkedList.addAtIndex(5, 0);
+// linkedList.addAtHead(6);
