@@ -707,6 +707,168 @@ const deserialize = function (data) {
 
 ### Leetcode题目
 
+
+
+#### 203. 移除链表元素
+
+```js
+/**
+ * 1. 遍历链表
+ * 2. 当node.val === val时
+ *  i. 前节点指向后节点
+ *  ii. 删除节点指向null
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ * https://leetcode-cn.com/problems/remove-linked-list-elements/
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} val
+ * @return {ListNode}
+ */
+const removeElements = function (head, val) {
+  let curr = head;
+  let pre = null;
+  while (curr) {
+    const { next } = curr;
+    if (curr.val === val) {
+      if (pre) {
+        pre.next = curr.next;
+        // 清空匹配节点的右指针指向
+        curr.next = null;
+      } else {
+        // 如果前置指针不存在就代表删除的是头节点，头指针就要移动到后一个节点上
+        head = next;
+      }
+    } else {
+      pre = curr;
+    }
+
+    // 移动指针
+    curr = next;
+  }
+
+  return head;
+};
+
+```
+
+
+
+#### [234. 回文链表](https://leetcode-cn.com/problems/palindrome-linked-list/)
+
+```js
+/**
+ * https://leetcode-cn.com/problems/palindrome-linked-list/
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ *
+ * 1. 遍历链表，保存节点值到数组中
+ * 2. 用数组首尾双指针的方式进行判断
+ */
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+const isPalindrome = function (head) {
+  // 节点数组
+  const arr = [];
+
+  while (head) {
+    arr.push(head.val);
+    head = head.next;
+  }
+
+  for (let i = 0, j = arr.length - 1; i < j; i++, j--) {
+    if (arr[i] != arr[j]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+```
+
+
+
+
+
+#### [328. 奇偶链表](https://leetcode-cn.com/problems/odd-even-linked-list/)
+
+```js
+/**
+ * https://leetcode-cn.com/problems/odd-even-linked-list/
+ * 1. 设置3个指针
+ * curr 指向当前轮询节点 起始值为 head
+ * odd 指向当前奇数节点 起始值为 head
+ * even 指向当前偶数节点 起始值为 head.next
+ *
+ * 2. 轮询链表，轮询序号为index，起始值为3，从第三个节点开始算
+ * i. 当index为奇数时，odd.next = curr; odd = curr
+ * ii. 当index为偶数时，even.next = curr; even = curr
+ *
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+const oddEvenList = function (head) {
+  // 如果是空链表直接返回
+  if (!head) return null;
+  let curr = head;
+  let odd = head;
+  let even = head.next;
+  const eventHead = head.next;
+
+  // 判断奇偶的序号
+  let index = 3;
+
+  // 直接移动到第三个节点开始
+  if (curr && curr.next && curr.next.next) {
+    curr = curr.next.next;
+  } else {
+    return head;
+  }
+
+  while (curr) {
+    // 偶数
+    if (index % 2 === 0) {
+      even.next = curr;
+      even = curr;
+    } else {
+      // 奇数
+      odd.next = curr;
+      odd = curr;
+    }
+
+    curr = curr.next;
+    index = index + 1;
+  }
+  console.log('index', index);
+
+  // 偶指针指向空，奇数指针最后指向偶数的头指针
+  even.next = null;
+  odd.next = eventHead;
+
+  return head;
+};
+
+```
+
+
+
 #### 707. 设计链表
 
 ```js
@@ -938,124 +1100,6 @@ run();
 // linkedList.get(4);
 // linkedList.addAtIndex(5, 0);
 // linkedList.addAtHead(6);
-
-```
-
-
-
-#### 203. 移除链表元素
-
-```js
-/**
- * 1. 遍历链表
- * 2. 当node.val === val时
- *  i. 前节点指向后节点
- *  ii. 删除节点指向null
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
- * https://leetcode-cn.com/problems/remove-linked-list-elements/
- */
-/**
- * @param {ListNode} head
- * @param {number} val
- * @return {ListNode}
- */
-const removeElements = function (head, val) {
-  let curr = head;
-  let pre = null;
-  while (curr) {
-    const { next } = curr;
-    if (curr.val === val) {
-      if (pre) {
-        pre.next = curr.next;
-        // 清空匹配节点的右指针指向
-        curr.next = null;
-      } else {
-        // 如果前置指针不存在就代表删除的是头节点，头指针就要移动到后一个节点上
-        head = next;
-      }
-    } else {
-      pre = curr;
-    }
-
-    // 移动指针
-    curr = next;
-  }
-
-  return head;
-};
-
-```
-
-
-
-#### [328. 奇偶链表](https://leetcode-cn.com/problems/odd-even-linked-list/)
-
-```js
-/**
- * https://leetcode-cn.com/problems/odd-even-linked-list/
- * 1. 设置3个指针
- * curr 指向当前轮询节点 起始值为 head
- * odd 指向当前奇数节点 起始值为 head
- * even 指向当前偶数节点 起始值为 head.next
- *
- * 2. 轮询链表，轮询序号为index，起始值为3，从第三个节点开始算
- * i. 当index为奇数时，odd.next = curr; odd = curr
- * ii. 当index为偶数时，even.next = curr; even = curr
- *
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
- */
-/**
- * @param {ListNode} head
- * @return {ListNode}
- */
-const oddEvenList = function (head) {
-  // 如果是空链表直接返回
-  if (!head) return null;
-  let curr = head;
-  let odd = head;
-  let even = head.next;
-  const eventHead = head.next;
-
-  // 判断奇偶的序号
-  let index = 3;
-
-  // 直接移动到第三个节点开始
-  if (curr && curr.next && curr.next.next) {
-    curr = curr.next.next;
-  } else {
-    return head;
-  }
-
-  while (curr) {
-    // 偶数
-    if (index % 2 === 0) {
-      even.next = curr;
-      even = curr;
-    } else {
-      // 奇数
-      odd.next = curr;
-      odd = curr;
-    }
-
-    curr = curr.next;
-    index = index + 1;
-  }
-  console.log('index', index);
-
-  // 偶指针指向空，奇数指针最后指向偶数的头指针
-  even.next = null;
-  odd.next = eventHead;
-
-  return head;
-};
 
 ```
 
