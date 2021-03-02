@@ -3,10 +3,10 @@
  * @param {string} s
  * @return {string}
  */
-var reverseString = function(s) {
-    return s.split("").reverse().join("");
+const reverseString = function (s) {
+  return s.split('').reverse().join('');
 };
 
-var result = reverseString("hello");
+const result = reverseString('hello');
 
 console.log(result);
