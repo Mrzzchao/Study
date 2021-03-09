@@ -1,10 +1,9 @@
-var p = Promise.resolve(42);
+const p = Promise.resolve(42);
 
-p.then(function(msg) {
-    console.log(msg.toLowerCase());  // 会报错
-}).done(null,handlerErrors);
-
+p.then(function (msg) {
+  console.log(msg.toLowerCase()); // 会报错
+}).done(null, handlerErrors);
 
 function handlerErrors(err) {
-    console.log(err)
+  console.log(err);
 }

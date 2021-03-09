@@ -4,37 +4,40 @@
  **/
 
 const p = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve('p');
-    }, 1000);
+  setTimeout(() => {
+    resolve('p');
+  }, 1000);
 });
 
-p.then(function (v) {
+p.then(
+  function (v) {
     console.log('p error succ', foo.ss());
-}, function (err) {
-    console.log('p error,', err)
-});
+  },
+  function (err) {
+    console.log('p error,', err);
+  }
+);
 
 const p1 = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve('p1');
-    }, 1000)
+  setTimeout(() => {
+    resolve('p1');
+  }, 1000);
 });
 
 p.then((v) => {
-    console.log('p,', v);    // 传递直接值的情况
+  console.log('p,', v); // 传递直接值的情况
 });
 
-
 p1.then((v) => {
-    console.log('p1,', v);
-    return p;                // 返回promise的情况
-}).then((v) => {
+  console.log('p1,', v);
+  return p; // 返回promise的情况
+})
+  .then((v) => {
     console.log('p1 return promise,', v);
-}).then(p.then((v) => {      // 传递promise的情况
-    console.log('p1 param promise,', v);
-}));
-
-
-
-
+  })
+  .then(
+    p.then((v) => {
+      // 传递promise的情况
+      console.log('p1 param promise,', v);
+    })
+  );
