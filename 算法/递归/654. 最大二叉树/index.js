@@ -41,6 +41,7 @@ const constructMaximumBinaryTree = function (nums) {
   // 2. 新建最大节点
   const root = new TreeNode(max);
 
+  // 3. 递归左子树和右子树
   root.left = constructMaximumBinaryTree(nums.slice(0, index));
   root.right = constructMaximumBinaryTree(nums.slice(index + 1));
 

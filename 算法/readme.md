@@ -6,9 +6,11 @@
 
 [二叉树题目](https://leetcode-cn.com/leetbook/read/data-structure-binary-tree/x63shc/)
 
+## 基本理论
 
 
-## 递归
+
+### 递归
 
 - 确定大问题
 - 确定子问题
@@ -41,7 +43,7 @@
 
 
 
-## 滑动窗口
+### 滑动窗口
 
 - 两个指针
 - 滑动窗口
@@ -63,7 +65,7 @@ while (right < s.size()) {
 
 
 
-## 分治
+### 分治
 
 ```
 分治法所能解决的问题一般具有以下几个特征：
@@ -77,108 +79,9 @@ while (right < s.size()) {
 
 
 
-## 递归
+## 字符串
 
 ### Leetcode题目
-
-#### [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)
-
-```js
-/**
- * https://leetcode-cn.com/problems/swap-nodes-in-pairs/
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
- * 递归做法
- * 1. 首先，我们交换列表中的前两个节点，也就是 head 和 head.next；
- * 2. 然后我们以 swap(head.next.next) 的形式调用函数自身，以交换头两个节点之后列表的其余部分。
- * 3. 最后，我们将步骤（2）中的子列表的返回头与步骤（1）中交换的两个节点相连，以形成新的链表。
- */
-/**
- * @param {ListNode} head
- * @return {ListNode}
- */
-const swapPairs = function (head) {
-  if (!head) return null;
-
-  // 新头部
-  let newHead = null;
-
-  // 递归子问题的新头部
-  const nextHead = swapPairs(head.next && head.next.next);
-
-  // 交换当前节点和下一个节点，并且下一个节点指向递归子问题的头部
-  newHead = head.next;
-
-  // 如果下一个节点不存在，就代表没可以交换的，直接返回头直接
-  if (!newHead) return head;
-
-  newHead.next = head;
-  head.next = nextHead;
-
-  // 返回新头部指针
-  return newHead;
-};
-
-
-```
-
-
-
-#### [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
-
-```js
-/**
- * https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/
- * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
- * }
- */
-/**
- * 将以 root 为根的树拉平为链表
- * 递归做法：
- * 1. 将 root 的左子树和右子树拉平。
- * 2. 将 root 的右子树接到左子树下方，然后将整个左子树作为右子树。
- * 3. 后序遍历整棵树，然后
- * i. 将左子树作为右子树
- * ii. 将右子树链接到左子树
- * @param {TreeNode} root
- * @return {void} Do not return anything, modify root in-place instead.
- */
-const flatten = function (root) {
-  // base case
-  if (!root) return null;
-
-  flatten(root.left);
-  flatten(root.right);
-
-  /** ** 后序遍历位置 ****/
-  // 1、左右子树已经被拉平成一条链表
-  const { left } = root;
-  const { right } = root;
-
-  // 2、将左子树作为右子树
-  root.left = null;
-  root.right = left;
-
-  // 3、将原先的右子树接到当前右子树的末端
-  let p = root;
-  while (p.right != null) {
-    p = p.right;
-  }
-  p.right = right;
-};
-
-```
-
-
-
-
 
 #### [344. 反转字符串](https://leetcode-cn.com/problems/reverse-string/)
 
@@ -213,64 +116,6 @@ const result = reverseString('123456');
 console.log(result);
 
 ```
-
-
-
-#### [654. 最大二叉树](https://leetcode-cn.com/problems/maximum-binary-tree/)
-
-```js
-/**
- * https://leetcode-cn.com/problems/maximum-binary-tree/
- * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
- * }
- */
-function TreeNode(val, left, right) {
-  this.val = val === undefined ? 0 : val;
-  this.left = left === undefined ? null : left;
-  this.right = right === undefined ? null : right;
-}
-/**
- * 递归做法
- * 1. 用先序遍历
- * 2. 每一次遍历找到数组中最大的值，并记录索引为index，然后新建一个root节点。
- * 3. 然后
- * i. 左子树：root.left = constructMaximumBinaryTree(nums.slice(0, index))
- * ii.右子树：root.right = constructMaximumBinaryTree(nums.slice(index))
- * iii. return root
- * 4. base case是 nums.lenght === 0;
- * @param {number[]} nums
- * @return {TreeNode}
- */
-const constructMaximumBinaryTree = function (nums) {
-  // base case: 数组为空
-  if (nums.length === 0) return null;
-
-  // 1. 找到数组中最大的值
-  let max = Number.MIN_SAFE_INTEGER;
-  let index;
-  nums.forEach((num, idx) => {
-    if (num > max) {
-      max = num;
-      index = idx;
-    }
-  });
-
-  // 2. 新建最大节点
-  const root = new TreeNode(max);
-
-  root.left = constructMaximumBinaryTree(nums.slice(0, index));
-  root.right = constructMaximumBinaryTree(nums.slice(index + 1));
-
-  return root;
-};
-
-```
-
-
 
 
 
@@ -483,8 +328,6 @@ const maxDepth = function (root) {
   return maxDepth;
 };
 ```
-
-
 
 
 
@@ -942,6 +785,126 @@ const deserialize = function (data) {
 
 
 
+#### [652. 寻找重复的子树](https://leetcode-cn.com/problems/find-duplicate-subtrees/)
+
+```js
+/**
+ * https://leetcode-cn.com/problems/find-duplicate-subtrees/
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * 递归做法
+ * 1. 定一个map 利用二叉树的序列化算法统计出所有序列的值 一次递归记为map[name]++。
+ * 2. 如果在递归时，map[name] === 2 说明已经重复了，就记录在结果数组里面
+ * @param {TreeNode} root
+ * @return {TreeNode[]}
+ */
+const findDuplicateSubtrees = function (root) {
+  // 结果数组
+  const result = [];
+
+  // 序列化映射
+  const map = {};
+
+  // 序列化算法
+  function serialize(root) {
+    if (root === null) {
+      return 'X';
+    }
+
+    const left = serialize(root.left);
+    const right = serialize(root.right);
+
+    // 记录在序列化映射表里
+    const name = `${root.val},${left},${right}`;
+    if (map[name]) {
+      map[name] = map[name] + 1;
+    } else {
+      map[name] = 1;
+    }
+
+    // 值等于2 满足重复条件 新增进结果列表
+    if (map[name] === 2) {
+      result.push(root);
+    }
+
+    return name;
+  }
+
+  serialize(root);
+
+  return result;
+};
+
+```
+
+
+
+#### [654. 最大二叉树](https://leetcode-cn.com/problems/maximum-binary-tree/)
+
+```js
+/**
+ * https://leetcode-cn.com/problems/maximum-binary-tree/
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
+}
+/**
+ * 递归做法
+ * 1. 用先序遍历
+ * 2. 每一次遍历找到数组中最大的值，并记录索引为index，然后新建一个root节点。
+ * 3. 然后
+ * i. 左子树：root.left = constructMaximumBinaryTree(nums.slice(0, index))
+ * ii.右子树：root.right = constructMaximumBinaryTree(nums.slice(index))
+ * iii. return root
+ * 4. base case是 nums.lenght === 0;
+ * @param {number[]} nums
+ * @return {TreeNode}
+ */
+const constructMaximumBinaryTree = function (nums) {
+  // base case: 数组为空
+  if (nums.length === 0) return null;
+
+  // 1. 找到数组中最大的值
+  let max = Number.MIN_SAFE_INTEGER;
+  let index;
+  nums.forEach((num, idx) => {
+    if (num > max) {
+      max = num;
+      index = idx;
+    }
+  });
+
+  // 2. 新建最大节点
+  const root = new TreeNode(max);
+
+  root.left = constructMaximumBinaryTree(nums.slice(0, index));
+  root.right = constructMaximumBinaryTree(nums.slice(index + 1));
+
+  return root;
+};
+
+```
+
+
+
+
+
+
+
 ## 链表
 
 ### Leetcode题目
@@ -1065,6 +1028,54 @@ const mergeTwoLists = function (l1, l2) {
 
 
 
+#### [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)
+
+```js
+/**
+ * https://leetcode-cn.com/problems/swap-nodes-in-pairs/
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ * 递归做法
+ * 1. 首先，我们交换列表中的前两个节点，也就是 head 和 head.next；
+ * 2. 然后我们以 swap(head.next.next) 的形式调用函数自身，以交换头两个节点之后列表的其余部分。
+ * 3. 最后，我们将步骤（2）中的子列表的返回头与步骤（1）中交换的两个节点相连，以形成新的链表。
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+const swapPairs = function (head) {
+  if (!head) return null;
+
+  // 新头部
+  let newHead = null;
+
+  // 递归子问题的新头部
+  const nextHead = swapPairs(head.next && head.next.next);
+
+  // 交换当前节点和下一个节点，并且下一个节点指向递归子问题的头部
+  newHead = head.next;
+
+  // 如果下一个节点不存在，就代表没可以交换的，直接返回头直接
+  if (!newHead) return head;
+
+  newHead.next = head;
+  head.next = nextHead;
+
+  // 返回新头部指针
+  return newHead;
+};
+
+
+```
+
+
+
+
+
 #### [61. 旋转链表](https://leetcode-cn.com/problems/rotate-list/)
 
 ```js
@@ -1116,6 +1127,61 @@ const rotateRight = function (head, k) {
 };
 
 ```
+
+
+
+#### [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
+
+```js
+/**
+ * https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * 将以 root 为根的树拉平为链表
+ * 递归做法：
+ * 1. 将 root 的左子树和右子树拉平。
+ * 2. 将 root 的右子树接到左子树下方，然后将整个左子树作为右子树。
+ * 3. 后序遍历整棵树，然后
+ * i. 将左子树作为右子树
+ * ii. 将右子树链接到左子树
+ * @param {TreeNode} root
+ * @return {void} Do not return anything, modify root in-place instead.
+ */
+const flatten = function (root) {
+  // base case
+  if (!root) return null;
+
+  flatten(root.left);
+  flatten(root.right);
+
+  /** ** 后序遍历位置 ****/
+  // 1、左右子树已经被拉平成一条链表
+  const { left } = root;
+  const { right } = root;
+
+  // 2、将左子树作为右子树
+  root.left = null;
+  root.right = left;
+
+  // 3、将原先的右子树接到当前右子树的末端
+  let p = root;
+  while (p.right != null) {
+    p = p.right;
+  }
+  p.right = right;
+};
+
+```
+
+
+
+
 
 
 
