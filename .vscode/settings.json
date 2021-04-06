@@ -1,3 +1,4 @@
 {
-    "rdhelper.cas.status": "tempclose"
+    "rdhelper.cas.status": "tempclose",
+    "svn.ignoreMissingSvnWarning": true
 }
