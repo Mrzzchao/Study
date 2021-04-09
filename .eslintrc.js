@@ -16,6 +16,7 @@ module.exports = {
     ],
     'new-cap': 'off',
     'no-unused-vars': 'off',
+    'no-plusplus': 'off',
   },
   overrides: [
     {
