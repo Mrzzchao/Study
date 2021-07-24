@@ -25,7 +25,6 @@ function deepClone(target, map = new WeakMap()) {
     }
     return cloneTarget;
   }
-
   return target;
 }
 const target = {
