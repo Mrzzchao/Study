@@ -8,12 +8,11 @@
  * @param {number} target
  * @return {number}
  */
-var searchInsert = function(nums, target) {
-    if (nums.includes(target)) {
-        return nums.indexOf(target);
-    }
-    return nums.filter(el => el < target).length;
+const searchInsert = function (nums, target) {
+  if (nums.includes(target)) {
+    return nums.indexOf(target);
+  }
+  return nums.filter((el) => el < target).length;
 };
 
-searchInsert([1,3,5,6], 7);
-
+searchInsert([1, 3, 5, 6], 7);
