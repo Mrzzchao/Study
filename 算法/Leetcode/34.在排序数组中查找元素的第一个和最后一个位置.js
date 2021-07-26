@@ -39,3 +39,18 @@ const searchRange = function (nums, target) {
 // @after-stub-for-debug-begin
 module.exports = searchRange;
 // @after-stub-for-debug-end
+
+const searchFirstLow = function (nums, target) {
+  const search = (left, right) => {
+    if (left > right) return -1;
+    const mid = Math.floor((left + right) / 2);
+    if (nums[mid] < target) {
+      return left;
+    }
+    return search(left, mid - 1);
+  };
+
+  return search(0, nums.length - 1);
+};
+
+console.log(searchFirstLow([10, 7, 7, 5, 3, 1, 1], 3));

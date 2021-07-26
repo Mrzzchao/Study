@@ -35,6 +35,7 @@ LRUCache.prototype.put = function (key, value) {
   }
 
   this.map.set(key, value);
+  // keys() 返回一个引用的 Iterator 对象。它包含按照顺序插入 Map 对象中每个元素的key值。
   const keys = this.map.keys();
   while (this.map.size > this.capacity) {
     this.map.delete(keys.next().value);
