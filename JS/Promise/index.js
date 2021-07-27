@@ -97,7 +97,7 @@ class MyPromise {
   // 全部成功算成功，有一个失败就算失败
   static all(promiseArr) {
     const result = [];
-    return new MyPromise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       for (let i = 0; i < promiseArr.length; i++) {
         Promise.resolve(promiseArr[i])
           .then(
