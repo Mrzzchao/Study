@@ -93,6 +93,61 @@ class MyPromise {
       this.onRejectedCallBacks.push(onRejection);
     }
   }
+
+  // 全部成功算成功，有一个失败就算失败
+  static all(promiseArr) {
+    const result = [];
+    return new MyPromise((resolve, reject) => {
+      for (let i = 0; i < promiseArr.length; i++) {
+        Promise.resolve(promiseArr[i])
+          .then(
+            (data) => {
+              result.push(data);
+              if (result.length === promiseArr.length) {
+                resolve(result);
+              }
+              return Promise.resolve(result);
+            },
+            (err) => {
+              return reject(err);
+            }
+          )
+          .catch((err) => {
+            reject(err);
+          });
+      }
+    });
+  }
+
+  // 会返回所有结果
+  static allSettled(promiseArr) {
+    return new MyPromise((resolve, reject) => {
+      const result = [];
+      function checkResolve() {
+        if (promiseArr.length === result.length) {
+          resolve(result);
+        }
+      }
+      for (let i = 0; i < promiseArr.length; i++) {
+        Promise.resolve(promiseArr[i]).then(
+          (data) => {
+            result.push({
+              status: FULFILLED,
+              value: data,
+            });
+            checkResolve();
+          },
+          (err) => {
+            result.push({
+              status: REJECTED,
+              reason: err,
+            });
+            checkResolve();
+          }
+        );
+      }
+    });
+  }
 }
 
 module.exports = MyPromise;
