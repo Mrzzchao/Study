@@ -1,10 +1,19 @@
+const specialList = ['"[object RegExp]"'];
+
 function deepClone(target, map = new WeakMap()) {
   // 需要单独处理null，因为他的typeof 类型也是object
   if (Object.prototype.toString.apply(target) === '[object Null]') {
     return target;
   }
+
+  function checkSpecified(target) {
+    return specialList.some((type) => {
+      return Object.prototype.toString.call(target);
+    });
+  }
+
   // 对象数组的处理，数组类型也是object
-  if (typeof target === 'object') {
+  if (typeof target === 'object' && !checkSpecified(target)) {
     let cloneTarget = {};
     if (Object.prototype.toString.call(target) === '[object Array]') {
       cloneTarget = [];
@@ -42,6 +51,7 @@ const target = {
     console.log('test');
   },
   h: Symbol(234324),
+  i: /222/,
 };
 
 target.target = target;

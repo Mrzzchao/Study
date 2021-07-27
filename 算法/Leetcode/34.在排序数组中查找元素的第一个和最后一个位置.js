@@ -44,13 +44,21 @@ const searchFirstLow = function (nums, target) {
   const search = (left, right) => {
     if (left > right) return -1;
     const mid = Math.floor((left + right) / 2);
+    if (nums[mid] === target) {
+      return mid;
+    }
     if (nums[mid] < target) {
-      return left;
+      return search(mid + 1, right);
     }
     return search(left, mid - 1);
   };
 
-  return search(0, nums.length - 1);
+  const matchIndex = search(0, nums.length - 1);
+  if (matchIndex === -1) return -1;
+  let lowIndex = matchIndex;
+  while (nums[--lowIndex] >= nums[matchIndex]) {}
+
+  return nums[lowIndex];
 };
 
-console.log(searchFirstLow([10, 7, 7, 5, 3, 1, 1], 3));
+console.log(searchFirstLow([1, 2, 3, 4, 5, 6, 7, 8], 3));
