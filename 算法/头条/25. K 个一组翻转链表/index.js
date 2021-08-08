@@ -10,6 +10,4 @@
  * @param {number} k
  * @return {ListNode}
  */
-var reverseKGroup = function(head, k) {
-    
-};
+const reverseKGroup = function (head, k) {};

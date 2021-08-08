@@ -3,18 +3,18 @@
  * @param {string} S
  * @return {string}
  */
-var compressString = function(S) {
+const compressString = function (S) {
   let count = 1;
-  let str = ''
+  let str = '';
 
-  for(let i = 1; i < S.length + 1; i++) {
-    if(S[i] === S[i - 1]) {
+  for (let i = 1; i < S.length + 1; i++) {
+    if (S[i] === S[i - 1]) {
       count++;
     } else {
-      str += (S[i - 1] + count)
-      count = 1
+      str += S[i - 1] + count;
+      count = 1;
     }
   }
 
-  return S.length > str.length ? str : S
+  return S.length > str.length ? str : S;
 };
