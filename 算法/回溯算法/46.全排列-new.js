@@ -15,40 +15,11 @@
 const permute = function (nums) {
   const result = [];
   const track = [];
-
-  function backtrack(nums = [], track = []) {
-    // 结束条件，遍历完了
-    if (nums.length === 0) {
-      result.push([...track]);
-    }
-
-    // 遍历选择列表
-    for (let i = 0; i < nums.length; i++) {
-      // 做选择
-      const num = nums[i];
-      track.push(num);
-      const newArr = [...nums.slice(0, i), ...nums.slice(i + 1)];
-
-      // 推荐
-      backtrack(newArr, track);
-      // 撤销选择
-      track.pop();
-    }
-  }
-
-  backtrack(nums, []);
-
-  return result;
-};
-
-const permute2 = function (nums) {
-  const result = [];
-  const track = [];
   const useMap = {};
 
-  function backtrack(index, track = []) {
+  function backtrack() {
     // 结束条件，遍历完了
-    if (nums.length === index) {
+    if (nums.length === track.length) {
       result.push([...track]);
     }
 
@@ -60,14 +31,14 @@ const permute2 = function (nums) {
       track.push(num);
       useMap[i] = true;
       // 推荐
-      backtrack(index++, track);
+      backtrack();
       // 撤销选择
       track.pop();
       useMap[i] = false;
     }
   }
 
-  backtrack(nums, []);
+  backtrack();
 
   return result;
 };
