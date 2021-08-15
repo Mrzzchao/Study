@@ -3,32 +3,32 @@
  * @param {string} s
  * @return {number}
  */
-var lengthOfLongestSubstring = function (s) {
-    var maxLen = 0
-    var count = 0
-    var sObj = {}
+const lengthOfLongestSubstring = function (s) {
+  let maxLen = 0;
+  let count = 0;
+  let sObj = {};
 
-    for(var i = 0; i < s.length; i++) {
-        var c = s[i]
-        if(sObj[c] || sObj[c] === 0) {
-            var oI = sObj[c]
-            i = oI + 1
-            count = 1
-            sObj = {}
-            sObj[s[i]] = i
-        } else {
-            sObj[c] = i
-            count++
-        }
-
-        if(count > maxLen) {
-            maxLen = count
-        }
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (sObj[c] || sObj[c] === 0) {
+      const oI = sObj[c];
+      i = oI + 1;
+      count = 1;
+      sObj = {};
+      sObj[s[i]] = i;
+    } else {
+      sObj[c] = i;
+      count++;
     }
 
-    return maxLen
+    if (count > maxLen) {
+      maxLen = count;
+    }
+  }
+
+  return maxLen;
 };
 
-var result = lengthOfLongestSubstring("abcabcbb");
+const result = lengthOfLongestSubstring('abcabcbb');
 
 console.log(result);

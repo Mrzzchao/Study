@@ -13,7 +13,6 @@
 const subsets = function (nums) {
   const result = [];
   const track = [];
-  const selectList = [true, false];
 
   function backtrack(startIndex) {
     // 到达叶子结点了
