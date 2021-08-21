@@ -3,39 +3,39 @@
  * @param {string} s
  * @return {string}
  */
-var longestPalindrome = function (s) {
-    var len = s.length
-    var longPalindromeStr = ''
-    for(var i = 0; i < len; i++) {
-        for(var j = len; j >= 0; j--) {
-            var subS = s.slice(i, j)
-            if((j - i) < longPalindromeStr.length) break;
-            if(isPalindrome(subS)) {
-                if(subS.length > longPalindromeStr.length) {
-                    longPalindromeStr = subS
-                }
-                break
-            }
+const longestPalindrome = function (s) {
+  const len = s.length;
+  let longPalindromeStr = '';
+  for (let i = 0; i < len; i++) {
+    for (let j = len; j >= 0; j--) {
+      const subS = s.slice(i, j);
+      if (j - i < longPalindromeStr.length) break;
+      if (isPalindrome(subS)) {
+        if (subS.length > longPalindromeStr.length) {
+          longPalindromeStr = subS;
         }
+        break;
+      }
     }
-    return longPalindromeStr
+  }
+  return longPalindromeStr;
 
-    function isPalindrome(str) {
-        var i = 0
-        var j = str.length - 1
+  function isPalindrome(str) {
+    let i = 0;
+    let j = str.length - 1;
 
-        while(i < j) {
-            if(str[i] === str[j]) {
-                i++
-                j--
-            } else {
-                return false
-            }
-        }
-        return true
+    while (i < j) {
+      if (str[i] === str[j]) {
+        i++;
+        j--;
+      } else {
+        return false;
+      }
     }
+    return true;
+  }
 };
 
-var result = longestPalindrome("babad");
+const result = longestPalindrome('babad');
 
 console.log(result);
